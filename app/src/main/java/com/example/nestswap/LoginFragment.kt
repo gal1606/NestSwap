@@ -1,5 +1,6 @@
 package com.example.nestswap
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +30,8 @@ class LoginFragment : Fragment() {
         }
 
         binding.btnSignIn.setOnClickListener {
-            //To Do
+            val intent = Intent(requireContext(), ItemsListActivity::class.java)
+            startActivity(intent)
         }
     }
 

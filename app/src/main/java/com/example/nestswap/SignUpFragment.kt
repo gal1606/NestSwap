@@ -1,5 +1,6 @@
 package com.example.nestswap
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,12 +21,19 @@ class SignUpFragment : Fragment() {
         return binding?.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+            onSignUpClicked(view)
+    }
+
     private fun setUpView() {
         binding?.btnCompleteSignUp?.setOnClickListener(::onSignUpClicked)
     }
 
     private fun onSignUpClicked(view: View){
-        // To Do
-    }
+        binding?.btnCompleteSignUp?.setOnClickListener {
+            val intent = Intent(requireContext(), ItemsListActivity::class.java)
+            startActivity(intent)
+        }    }
 
 }

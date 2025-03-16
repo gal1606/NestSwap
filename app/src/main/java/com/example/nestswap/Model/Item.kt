@@ -11,5 +11,6 @@ data class Item(
     val category: String,
     val condition: String,
     val owner: String,
-    val price: Int
+    val price: Double?,
+    val imageUri: String? = null
 ) : Parcelable

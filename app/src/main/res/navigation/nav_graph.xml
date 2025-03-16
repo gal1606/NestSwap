@@ -12,14 +12,68 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login_to_signup"
-            app:destination="@id/signUpFragment2"
+            app:destination="@id/signupFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_to_profile"
+            app:destination="@id/profileFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
-        android:id="@+id/signUpFragment2"
+        android:id="@+id/signupFragment"
         android:name="com.example.nestswap.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signup_to_profile"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/signupFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signup_to_login"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/itemsListFragment"
+        android:name="com.example.nestswap.ItemsListFragment"
+        android:label="Items List"
+        tools:layout="@layout/fragment_items_list">
+        <action
+            android:id="@+id/action_items_list_to_add_item"
+            app:destination="@id/addItemFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.nestswap.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="userId"
+            android:defaultValue="default_user_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_profile_to_add_item"
+            app:destination="@id/addItemFragment" />
+        <action
+            android:id="@+id/action_profile_to_reviews"
+            app:destination="@id/reviewsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="com.example.nestswap.AddItemFragment"
+        android:label="Add Item"
+        tools:layout="@layout/fragment_add_item" />
+
+    <fragment
+        android:id="@+id/reviewsFragment"
+        android:name="com.example.nestswap.ReviewsFragment"
+        android:label="Reviews"
+        tools:layout="@layout/fragment_reviews" />
+
 </navigation>

@@ -41,7 +41,7 @@ class ItemDetailsFragment : DialogFragment() {
         binding.btnRent.setOnClickListener {
             dismiss()
 
-            val paymentFragment = PaymentFragment.newInstance(item?.name, item?.price ?: 0)
+            val paymentFragment = PaymentFragment.newInstance(item?.name, (item?.price ?: 0) as Int)
 
             paymentFragment.show(parentFragmentManager, "PaymentDialog")
         }

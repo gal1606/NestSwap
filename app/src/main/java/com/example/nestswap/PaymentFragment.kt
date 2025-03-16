@@ -29,20 +29,15 @@ class PaymentFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = FragmentPaymentBinding.inflate(layoutInflater)
 
-        // Retrieve arguments
         val itemName = arguments?.getString(ARG_ITEM_NAME)
         val price = arguments?.getInt(ARG_PRICE, 0)
 
-        // Populate the dialog with payment details
         binding.tvPaymentHeader.text = "Please fill in your card details"
         binding.tvCardNumber.text = "Card Number:"
         binding.tvExpirationDate.text = "Expiration date:"
         binding.tvCvv.text = "Cvv:"
         binding.tvId.text = "Id:"
-//        binding.tvPaymentItem.text = "Item to Rent: $itemName" // Uncommented
-//        binding.tvPaymentAmount.text = "Amount: $$price" // Uncommented
-//        binding.tvPaymentInstructions.txt = "Please enter your payment details below."
-        binding.tvTotalPrice.text = "Total: $$price" // Set total price
+        binding.tvTotalPrice.text = "Total: $$price"
 
         binding.btnCompleteSignUp.setOnClickListener {
             val cardNumber = binding.editTextCardNumber.text.toString()
@@ -51,8 +46,7 @@ class PaymentFragment : DialogFragment() {
             val id = binding.editTextId.text.toString()
 
             if (cardNumber.isNotEmpty() && expirationDate.isNotEmpty() && cvv.isNotEmpty() && id.isNotEmpty()) {
-                // Placeholder for payment logic (e.g., API call)
-                dialog?.dismiss() // Dismiss the dialog on successful "payment"
+                dialog?.dismiss()
             } else {
                 // Show error (e.g., using a Toast)
                 // For now, just log or do nothing

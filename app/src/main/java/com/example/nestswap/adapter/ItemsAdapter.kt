@@ -1,13 +1,14 @@
-package com.example.nestswap
+package com.example.nestswap.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nestswap.Item
+import com.example.nestswap.ItemDetailsFragment
 import com.example.nestswap.databinding.ItemRowBinding
 
-class ItemsAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
+class ItemsAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)

@@ -1,6 +1,5 @@
 package com.example.nestswap
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,8 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -30,8 +30,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.btnSignIn.setOnClickListener {
-            val intent = Intent(requireContext(), ItemsListActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_login_to_profile)
         }
     }
 

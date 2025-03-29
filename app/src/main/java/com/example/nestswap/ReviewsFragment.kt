@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nestswap.Model.Model
+import com.example.nestswap.adapter.ReviewAdapter
 import com.example.nestswap.databinding.FragmentReviewsBinding
-import android.widget.ExpandableListView
-import android.widget.SimpleExpandableListAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class ReviewsFragment : Fragment() {
 
@@ -27,39 +28,21 @@ class ReviewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val reviews = Model.instance.reviews
+        val userId = arguments?.getString("userId")
 
-        val groupData = reviews.map { it.reviewer }.distinct()
-        val groupList = groupData.map { mapOf("reviewer" to it) }
-
-        val childData = groupData.map { reviewer ->
-            reviews.filter { it.reviewer == reviewer }.map { review ->
-                mapOf(
-                    "itemName" to review.itemName,
-                    "rating" to review.rating.toString(),
-                    "body" to (review.body ?: "")
-                )
+        Model.instance.getAllItems { items, itemsSource ->
+            if (userId != null) {
+                val ownerItemIds = items.filter { it.owner == userId }.map { it.id.toString() }
+                Model.instance.getAllReviews { reviews ->
+                    val filteredReviews = reviews.filter { it.itemId in ownerItemIds }
+                    val adapter = ReviewAdapter(filteredReviews)
+                    binding.rvReviews.layoutManager = LinearLayoutManager(context)
+                    binding.rvReviews.adapter = adapter
+                }
+            } else {
+                Snackbar.make(requireView(), "No user ID provided.", Snackbar.LENGTH_LONG).show()
             }
         }
-
-        val groupFrom = arrayOf("reviewer")
-        val groupTo = intArrayOf(android.R.id.text1)
-        val childFrom = arrayOf("itemName", "rating", "body")
-        val childTo = intArrayOf(android.R.id.text1, android.R.id.text2, android.R.id.text2) // Reuse text2 for body
-
-        val adapter = SimpleExpandableListAdapter(
-            requireContext(),
-            groupList,
-            android.R.layout.simple_expandable_list_item_1,
-            groupFrom,
-            groupTo,
-            childData,
-            android.R.layout.simple_list_item_2,
-            childFrom,
-            childTo
-        )
-
-        binding.elvReviews.setAdapter(adapter)
     }
 
     override fun onDestroyView() {

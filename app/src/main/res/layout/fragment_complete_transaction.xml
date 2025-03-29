@@ -8,54 +8,29 @@
     android:background="@android:color/white"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/ivTransactionItem"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:contentDescription="Transaction Item"
-        android:src="@drawable/projector"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
-
     <TextView
         android:id="@+id/tvItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Item Name"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ivTransactionItem"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="182dp"
         tools:text="Laptop" />
-
-    <TextView
-        android:id="@+id/tvItemOwner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Owner: Unknown"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        tools:text="Owner: Alice" />
 
     <Button
         android:id="@+id/btnCompleteTransaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Complete Transaction"
         android:backgroundTint="@android:color/holo_green_light"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemOwner"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="I have returened this item"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

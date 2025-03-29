@@ -1,10 +1,13 @@
 package com.example.nestswap
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
+import com.example.nestswap.Model.dao.Item
 import com.example.nestswap.databinding.FragmentItemDetailsBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -26,6 +29,7 @@ class ItemDetailsFragment : DialogFragment() {
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = FragmentItemDetailsBinding.inflate(layoutInflater)
@@ -34,15 +38,21 @@ class ItemDetailsFragment : DialogFragment() {
         item?.let {
             binding.tvItemName.text = it.name
             binding.tvDescription.text = it.description
-            binding.tvItemOwner.text = "Owner: ${it.owner}"
-            binding.tvPrice.text = "Price: $${it.price}"
+            binding.tvItemOwner.text = getString(R.string.owner, it.owner)
+            binding.tvPrice.text = getString(R.string.price, it.price)
+
+            it.imageUrl?.let { url ->
+                Glide.with(binding.imageView.context)
+                    .load(url)
+                    .into(binding.imageView)
+            } ?: binding.imageView.setImageDrawable(null)
         }
 
         binding.btnRent.setOnClickListener {
             dismiss()
 
-            val paymentFragment = PaymentFragment.newInstance(item?.name, (item?.price ?: 0) as Int)
-
+            val priceAsInt = (item?.price ?: 0.0).toInt()
+            val paymentFragment = PaymentFragment.newInstance(item?.name, priceAsInt, item?.owner ?: "default_owner_id")
             paymentFragment.show(parentFragmentManager, "PaymentDialog")
         }
 

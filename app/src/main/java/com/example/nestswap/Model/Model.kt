@@ -1,129 +1,273 @@
 package com.example.nestswap.Model
 
-import com.example.nestswap.Item
-import com.example.nestswap.Review
-import com.example.nestswap.R
-
 import android.graphics.Bitmap
-import android.os.Environment
-import java.io.File
-import java.io.FileOutputStream
-import java.util.UUID
+import android.os.Looper
+import android.util.Log
+import androidx.core.os.HandlerCompat
+import com.example.nestswap.Model.dao.AppLocalDb
+import com.example.nestswap.Model.dao.Item
+import com.example.nestswap.Model.dao.ItemDao
+import com.example.nestswap.Model.dao.Rental
+import com.example.nestswap.Model.dao.RentalDao
+import com.example.nestswap.Model.dao.ReviewDao
+import com.example.nestswap.Review
+import com.example.nestswap.base.Constants
+import com.example.nestswap.base.EmptyCallback
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.idz.colman24class2.model.CloudinaryModel
+import java.util.concurrent.Executors
 
 class Model private constructor() {
 
-    var items: MutableList<Item> = mutableListOf(
-        Item(1, "Laptop", "A barely used gaming laptop with high specs.", "Electronics", "Used", "Alice", 500.0),
-        Item(2, "Vintage Jacket", "Leather jacket from the 80s, great condition.", "Clothing", "Used", "Bob", 80.0),
-        Item(3, "Coffee Maker", "Brand new espresso machine, unopened.", "Appliances", "New", "Charlie", 150.0),
-        Item(4, "Bookshelf", "Wooden bookshelf, slightly scratched.", "Furniture", "Used", "logged_in_user_id", 120.0),
-        Item(5, "Smartphone", "Latest model, still in box.", "Electronics", "New", "Eve", 800.0),
-        Item(6, "Guitar", "Acoustic guitar with a few strum marks.", "Musical Instruments", "Used", "Frank", 200.0),
-        Item(7, "Desk Lamp", "Modern LED lamp, perfect for studying.", "Furniture", "New", "Grace", 50.0),
-        Item(8, "Running Shoes", "Worn a few times, size 9.", "Clothing", "Used", "Hank", 40.0),
-        Item(9, "Blender", "High-power blender, used once.", "Appliances", "Used", "Ivy", 90.0),
-        Item(10, "Board Game", "Complete set, played twice.", "Games", "Used", "Jack", 30.0),
-        Item(11, "Headphones", "Noise-canceling headphones, brand new.", "Electronics", "New", "Kelly", 250.0),
-        Item(12, "Dining Table", "Solid oak table, minor wear.", "Furniture", "Used", "Liam", 300.0),
-        Item(13, "Camera", "DSLR camera with lens, excellent condition.", "Electronics", "Used", "Mia", 600.0),
-        Item(14, "Sweater", "Hand-knitted wool sweater, like new.", "Clothing", "New", "Noah", 60.0),
-        Item(15, "Microwave", "Compact microwave, works perfectly.", "Appliances", "Used", "Olivia", 100.0),
-        Item(16, "Chess Set", "Wooden chess set, missing one pawn.", "Games", "Used", "Paul", 25.0),
-        Item(17, "Monitor", "27-inch 4K monitor, unopened.", "Electronics", "New", "Quinn", 400.0),
-        Item(18, "Couch", "Comfy sofa, some stains.", "Furniture", "Used", "Rose", 350.0),
-        Item(19, "Skateboard", "Barely used, great for tricks.", "Sports", "Used", "Sam", 70.0),
-        Item(20, "Watch", "Luxury wristwatch, brand new.", "Accessories", "New", "Tina", 900.0)
-    )
+    private val firebaseModel = FirebaseModel()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    val reviews: List<Review> = listOf(
-        Review(
-            itemId = 1,
-            itemImageResId = R.drawable.projector,
-            itemName = "Laptop",
-            reviewer = "John Doe",
-            body = "This laptop was perfect for my gaming needs! The performance was excellent, and the battery lasted all day. Highly recommend renting from Alice.",
-            rating = 5
-        ),
-        Review(
-            itemId = 3,
-            itemImageResId = R.drawable.projector,
-            itemName = "Coffee Maker",
-            reviewer = "Jane Smith",
-            body = "The coffee maker was brand new and worked like a charm. Made great espresso, though the instructions were a bit unclear. Thanks, Charlie!",
-            rating = 4
-        ),
-        Review(
-            itemId = 6,
-            itemImageResId = R.drawable.projector,
-            itemName = "Guitar",
-            reviewer = "Bob Johnson",
-            body = "The guitar was in good shape despite the strum marks. It sounded great, and Frank was easy to deal with during the rental.",
-            rating = 4
-        ),
-        Review(
-            itemId = 9,
-            itemImageResId = R.drawable.projector,
-            itemName = "Blender",
-            reviewer = "Alice Brown",
-            body = "This blender was powerful and easy to clean. Only used it once, but it was worth the rental. Ivy was a great host!",
-            rating = 4
-        ),
-        Review(
-            itemId = 13,
-            itemImageResId = R.drawable.projector,
-            itemName = "Camera",
-            reviewer = "Charlie Davis",
-            body = "The DSLR camera was in excellent condition. The lens was a bonus, and the photos turned out amazing. Mia was very responsive.",
-            rating = 5
-        ),
-        Review(
-            itemId = 20,
-            itemImageResId = R.drawable.projector,
-            itemName = "Watch",
-            reviewer = "Emily Wilson",
-            body = "This luxury watch was stunning and brand new. Kept perfect time, and Tina made the rental process seamless.",
-            rating = 5
-        )
-    )
+    private val db = AppLocalDb.database
+    private val itemDao: ItemDao = db.itemDao()
+    private val reviewDao: ReviewDao = db.reviewDao()
+    private val rentalDao: RentalDao = db.rentalDao()
 
-    // Changed to MutableList to allow adding new rentals
-    var rentals: MutableList<Rental> = mutableListOf(
-        Rental(1, "logged_in_user_id", "Alice", "2025-03-01", "2025-03-10"),
-        Rental(2, "logged_in_user_id", "Bob", "2025-03-05", "2025-03-15")
-    )
+    private val executor = Executors.newSingleThreadExecutor()
+    private val mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
 
     companion object {
-        val instance: Model by lazy { Model() }
+        val instance = Model()
     }
 
-    fun addItem(item: Item, bitmap: Bitmap?, callback: () -> Unit) {
-        if (bitmap != null) {
-            // Save the Bitmap to a file (simulating storage like Cloudinary)
-            val imageUri = saveBitmapToFile(bitmap)
-            val updatedItem = item.copy(imageUri = imageUri)
-            items = (items + updatedItem).toMutableList()
-        } else {
-            items = (items + item).toMutableList()
+    enum class DataSource {
+        LOCAL,
+        FIREBASE
+    }
+
+    fun getCurrentUserId(): String? = auth.currentUser?.uid
+
+    fun isUserSignedIn(): Boolean = auth.currentUser != null
+
+    fun signIn(email: String, password: String, callback: (Boolean, String?) -> Unit) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) callback(true, null)
+                else callback(false, task.exception?.message ?: "Sign-in failed")
+            }
+    }
+
+    fun signUp(email: String, password: String, callback: (Boolean, String?) -> Unit) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) callback(true, null)
+                else callback(false, task.exception?.message ?: "Sign-up failed")
+            }
+    }
+
+    fun signOut() {
+        auth.signOut()
+    }
+
+    fun getAllItems(callback: (List<Item>, DataSource) -> Unit) {
+        executor.execute {
+            try {
+                val localItems = itemDao.getAllItems()
+                mainHandler.post { callback(localItems, DataSource.LOCAL) }
+
+                firebaseModel.getAllItems { items ->
+                    executor.execute {
+                        try {
+                            items.forEach { itemDao.insert(it) }
+                            val updatedItems = itemDao.getAllItems()
+                            mainHandler.post { callback(updatedItems, DataSource.FIREBASE) }
+                        } catch (e: Exception) {
+                            mainHandler.post { callback(localItems, DataSource.LOCAL) }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                mainHandler.post { callback(emptyList(), DataSource.LOCAL) }
+            }
         }
-        // Simulate async operation (e.g., uploading to Cloudinary)
-        Thread {
-            Thread.sleep(1000) // Simulate network delay
-            callback()
-        }.start()
     }
 
-    private fun saveBitmapToFile(bitmap: Bitmap): String? {
-        return try {
-            val fileName = "item_${UUID.randomUUID()}.jpg"
-            val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName)
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
-            outputStream.flush()
-            outputStream.close()
-            file.absolutePath
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
+    fun getAllReviews(callback: (List<Review>) -> Unit) {
+        executor.execute {
+            try {
+                val localReviews = reviewDao.getAllReviews()
+                mainHandler.post { callback(localReviews) }
+
+                firebaseModel.getAllReviews { reviews ->
+                    executor.execute {
+                        try {
+                            reviews.forEach { reviewDao.insert(it) }
+                            val updatedReviews = reviewDao.getAllReviews()
+                            mainHandler.post { callback(updatedReviews) }
+                        } catch (e: Exception) {
+                            mainHandler.post { callback(localReviews) }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                mainHandler.post { callback(emptyList()) }
+            }
+        }
+    }
+
+    fun getReviewsForUser(userId: String, callback: (List<Review>) -> Unit) {
+        FirebaseFirestore.getInstance()
+            .collection("reviews")
+            .whereEqualTo("reviewee", userId)
+            .get()
+            .addOnSuccessListener { result ->
+                val reviews = result.mapNotNull { it.toObject(Review::class.java) }
+                callback(reviews)
+            }
+            .addOnFailureListener { callback(emptyList()) }
+    }
+
+    fun getAllRentals(callback: (List<Rental>, DataSource) -> Unit) {
+        executor.execute {
+            try {
+                val localRentals = rentalDao.getAllRentals()
+                mainHandler.post { callback(localRentals, DataSource.LOCAL) }
+
+                firebaseModel.getAllRentals { rentals ->
+                    executor.execute {
+                        try {
+                            val fetchedIds = rentals.map { it.id }
+                            rentalDao.deleteRentalsNotIn(fetchedIds)
+                            for (rental in rentals) {
+                                try {
+                                    rentalDao.insert(rental)
+                                } catch (e: android.database.sqlite.SQLiteConstraintException) {
+                                    Log.w("Model", "Duplicate rental ID ${rental.id} detected, updating instead")
+                                    rentalDao.update(rental) // Update if insert fails due to duplicate ID
+                                }
+                            }
+                            val updatedRentals = rentalDao.getAllRentals()
+                            mainHandler.post { callback(updatedRentals, DataSource.FIREBASE) }
+                        } catch (e: Exception) {
+                            Log.e("Model", "Error syncing rentals: ${e.message}", e)
+                            mainHandler.post { callback(localRentals, DataSource.LOCAL) }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Model", "Error fetching local rentals: ${e.message}", e)
+                mainHandler.post { callback(emptyList(), DataSource.LOCAL) }
+            }
+        }
+    }
+
+    fun addItem(item: Item, bitmap: Bitmap?, callback: (Boolean) -> Unit) {
+        if (bitmap != null) {
+            CloudinaryModel().uploadBitmap(bitmap, { url, publicId ->
+                val itemWithImage = item.copy(imageUrl = url, imagePublicId = publicId)
+                firebaseModel.addItem(itemWithImage) { success ->
+                    if (success) {
+                        executor.execute {
+                            try {
+                                itemDao.insert(itemWithImage)
+                                mainHandler.post { callback(true) }
+                            } catch (e: Exception) {
+                                Log.e("Model", "Failed to insert item into Room: ${e.message}", e)
+                                mainHandler.post { callback(false) }
+                            }
+                        }
+                    } else {
+                        callback(false)
+                    }
+                }
+            }, { error ->
+                Log.e("Model", "Error uploading image to Cloudinary: $error")
+                callback(false)
+            })
+        } else {
+            firebaseModel.addItem(item) { success ->
+                if (success) {
+                    executor.execute {
+                        try {
+                            itemDao.insert(item)
+                            mainHandler.post { callback(true) }
+                        } catch (e: Exception) {
+                            Log.e("Model", "Failed to insert item into Room: ${e.message}", e)
+                            mainHandler.post { callback(false) }
+                        }
+                    }
+                } else {
+                    callback(false)
+                }
+            }
+        }
+    }
+
+    fun deleteItem(item: Item, callback: EmptyCallback) {
+        firebaseModel.database.collection(Constants.COLLECTIONS.ITEMS).document(item.id.toString())
+            .delete()
+            .addOnSuccessListener {
+                executor.execute {
+                    try {
+                        itemDao.delete(item)
+                        mainHandler.post { callback(true) }
+                    } catch (e: Exception) {
+                        mainHandler.post { callback(false) }
+                    }
+                }
+            }
+            .addOnFailureListener {
+                executor.execute {
+                    try {
+                        itemDao.delete(item)
+                        mainHandler.post { callback(false) }
+                    } catch (e: Exception) {
+                        mainHandler.post { callback(false) }
+                    }
+                }
+            }
+    }
+
+    fun addReview(review: Review, callback: EmptyCallback) {
+        firebaseModel.addReview(review) {
+            executor.execute {
+                try {
+                    reviewDao.insert(review)
+                    mainHandler.post { callback(true) }
+                } catch (e: Exception) {
+                    mainHandler.post { callback(false) }
+                }
+            }
+        }
+    }
+
+    fun addRental(rental: Rental, callback: EmptyCallback) {
+        firebaseModel.addRental(rental) {
+            executor.execute {
+                try {
+                    rentalDao.insert(rental)
+                    mainHandler.post { callback(true) }
+                } catch (e: Exception) {
+                    mainHandler.post { callback(false) }
+                }
+            }
+        }
+    }
+
+    fun deleteRental(rentalId: Int, callback: (Boolean) -> Unit) {
+        firebaseModel.deleteRental(rentalId) { success ->
+            if (success) {
+                executor.execute {
+                    try {
+                        val rental = rentalDao.getRentalById(rentalId)
+                        if (rental != null) {
+                            rentalDao.delete(rental)
+                            mainHandler.post { callback(true) }
+                        } else {
+                            mainHandler.post { callback(false) }
+                        }
+                    } catch (e: Exception) {
+                        mainHandler.post { callback(false) }
+                    }
+                }
+            } else {
+                mainHandler.post { callback(false) }
+            }
         }
     }
 }

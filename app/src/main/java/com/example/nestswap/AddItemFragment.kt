@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.nestswap.Model.Model
-import com.example.nestswap.adapter.ItemIcon
+import com.example.nestswap.Model.dao.Item
 import com.example.nestswap.databinding.FragmentAddItemBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -28,18 +28,16 @@ class AddItemFragment : Fragment() {
 
     private val TAG = "AddItemFragment"
 
-
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
             when (lastAction) {
                 "take" -> takePictureLauncher.launch()
-                "pick" -> pickImageLauncher.launch("image/*")
             }
             lastAction = null
         } else {
             Snackbar.make(
                 requireView(),
-                "Permission required to proceed",
+                "Camera permission required to take pictures",
                 Snackbar.LENGTH_LONG
             ).show()
         }
@@ -53,10 +51,8 @@ class AddItemFragment : Fragment() {
                 inputStream?.close()
                 binding.ivItemImage.setImageBitmap(bitmap)
                 didSetItemImage = true
-                Log.d(TAG, "Image picked and set successfully")
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e(TAG, "Failed to load image: ${e.message}")
                 Snackbar.make(
                     requireView(),
                     "Failed to load image",
@@ -87,16 +83,7 @@ class AddItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnPickImage.setOnClickListener {
-            lastAction = "pick"
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                pickImageLauncher.launch("image/*")
-            } else {
-                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+            pickImageLauncher.launch("image/*") // No permission check needed
         }
 
         binding.btnTakePicture.setOnClickListener {
@@ -126,7 +113,7 @@ class AddItemFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val newId = (System.currentTimeMillis() / 1000).toInt()
+            val newId = System.currentTimeMillis().toInt() // Use milliseconds for more uniqueness
             val category = "General"
             val condition = "Used"
             val owner = getCurrentUserId()
@@ -145,20 +132,16 @@ class AddItemFragment : Fragment() {
 
             if (didSetItemImage) {
                 try {
-                    binding.ivItemImage.isDrawingCacheEnabled = true
-                    binding.ivItemImage.buildDrawingCache()
                     val drawable = binding.ivItemImage.drawable
                     val bitmap = if (drawable is BitmapDrawable) {
                         drawable.bitmap
                     } else {
-                        Log.e(TAG, "Drawable is not a BitmapDrawable")
                         null
                     }
                     if (bitmap != null) {
                         Model.instance.addItem(newItem, bitmap) {
                             requireActivity().runOnUiThread {
                                 binding.progressBar.visibility = View.GONE
-                                Log.d(TAG, "After save (with image) - Items size: ${Model.instance.items.size}, Rentals size: ${Model.instance.rentals.size}")
                                 findNavController().previousBackStackEntry?.savedStateHandle?.set("refresh", "true")
                                 Snackbar.make(
                                     requireView(),
@@ -190,17 +173,25 @@ class AddItemFragment : Fragment() {
                     }
                 }
             } else {
-                Model.instance.addItem(newItem, null) {
+                Model.instance.addItem(newItem, null) { success: Boolean ->
                     requireActivity().runOnUiThread {
                         binding.progressBar.visibility = View.GONE
-                        Log.d(TAG, "After save (no image) - Items size: ${Model.instance.items.size}, Rentals size: ${Model.instance.rentals.size}")
-                        findNavController().previousBackStackEntry?.savedStateHandle?.set("refresh", "true")
-                        Snackbar.make(
-                            requireView(),
-                            "Item added successfully",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        findNavController().navigateUp()
+                        if (success) {
+                            findNavController().previousBackStackEntry?.savedStateHandle?.set("refresh", "true")
+                            Snackbar.make(
+                                requireView(),
+                                "Item added successfully",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                            findNavController().navigateUp()
+                        } else {
+                            Snackbar.make(
+                                requireView(),
+                                "Item added to the server, but failed to save on the device. It will sync later.",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            findNavController().navigateUp()
+                        }
                     }
                 }
             }
@@ -217,6 +208,6 @@ class AddItemFragment : Fragment() {
     }
 
     private fun getCurrentUserId(): String {
-        return "logged_in_user_id"
+        return Model.instance.getCurrentUserId() ?: throw IllegalStateException("User not signed in")
     }
 }

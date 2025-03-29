@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "577980226773",
+    "project_id": "nest-swap-3f179",
+    "storage_bucket": "nest-swap-3f179.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577980226773:android:5be62a2b2d5115c002165c",
+        "android_client_info": {
+          "package_name": "com.example.nestswap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4tO4f2aHD63lgJoSeuP6SoPHW7XuboeY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

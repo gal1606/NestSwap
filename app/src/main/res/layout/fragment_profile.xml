@@ -13,33 +13,24 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Michael Scott"
+            android:text=""
             android:textSize="24sp"
             android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Michael Scott" />
-
-        <TextView
-            android:id="@+id/tvRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="★ 4.9"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/tvName"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="★ 4.9" />
+            tools:text="" />
 
         <TextView
             android:id="@+id/tvViewAllReviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:text="View All"
             android:textSize="14sp"
             android:textColor="@android:color/holo_blue_dark"
@@ -48,85 +39,96 @@
             app:layout_constraintTop_toTopOf="@+id/tvRating"
             app:layout_constraintBottom_toBottomOf="@+id/tvRating" />
 
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Tel Aviv"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/tvRating"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Tel Aviv" />
-
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Michael Scott"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            android:maxWidth="200dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnSaveProfile"
-            tools:text="Michael Scott" />
-
         <EditText
             android:id="@+id/etLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:text="Tel Aviv"
             android:textSize="16sp"
             android:visibility="gone"
-            android:maxWidth="200dp"
-            app:layout_constraintTop_toBottomOf="@+id/etName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnSaveProfile"
+            app:layout_constraintTop_toBottomOf="@+id/etName"
             tools:text="Tel Aviv" />
-
-        <Button
-            android:id="@+id/btnEditProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="96dp"
-            android:text="Edit Profile"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/tvViewAllReviews"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btnSaveProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="Save"
             android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/etName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnCancelEdit" />
+            app:layout_constraintTop_toBottomOf="@+id/etLocation"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btnCancelEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:text="Cancel"
             android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/btnSaveProfile"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/btnSaveProfile"
+            app:layout_constraintStart_toEndOf="@+id/btnSaveProfile" />
 
         <Button
-            android:id="@+id/btnFollow"
+            android:id="@+id/btnEditProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Follow"
-            android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@+id/tvName"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Edit Profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/profileSectionBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tvLocation,btnSaveProfile" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Michael Scott"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Michael Scott" />
+
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="★ 4.9"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvName"
+            tools:text="★ 4.9" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Tel Aviv"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvRating"
+            tools:text="Tel Aviv" />
+
+        <ProgressBar
+            android:id="@+id/progressBarLists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -137,7 +139,7 @@
             android:text="Currently Listed Items"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/tvLocation"
+            app:layout_constraintTop_toBottomOf="@+id/profileSectionBarrier"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView

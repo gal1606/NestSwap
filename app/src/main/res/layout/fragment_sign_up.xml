@@ -45,7 +45,7 @@
         android:layout_marginTop="16dp"
         android:text="Email:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCity" />
+        app:layout_constraintTop_toBottomOf="@+id/autoCity" />
 
     <EditText
         android:id="@+id/editFullName"
@@ -58,16 +58,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCardNumber" />
 
-    <EditText
-        android:id="@+id/editCity"
+    <AutoCompleteTextView
+        android:id="@+id/autoCity"
         android:layout_width="346dp"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
+        android:hint="Select city"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvExpirationDate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvExpirationDate" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
         android:id="@+id/editEmail"

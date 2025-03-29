@@ -1,0 +1,178 @@
+[
+  {
+    "city": "Jerusalem",
+    "country": "Israel"
+  },
+  {
+    "city": "Tel Aviv",
+    "country": "Israel"
+  },
+  {
+    "city": "Haifa",
+    "country": "Israel"
+  },
+  {
+    "city": "Rishon LeZion",
+    "country": "Israel"
+  },
+  {
+    "city": "Petah Tikva",
+    "country": "Israel"
+  },
+  {
+    "city": "Ashdod",
+    "country": "Israel"
+  },
+  {
+    "city": "Netanya",
+    "country": "Israel"
+  },
+  {
+    "city": "Beersheba",
+    "country": "Israel"
+  },
+  {
+    "city": "Holon",
+    "country": "Israel"
+  },
+  {
+    "city": "Bnei Brak",
+    "country": "Israel"
+  },
+  {
+    "city": "Ramat Gan",
+    "country": "Israel"
+  },
+  {
+    "city": "Ashkelon",
+    "country": "Israel"
+  },
+  {
+    "city": "Bat Yam",
+    "country": "Israel"
+  },
+  {
+    "city": "Herzliya",
+    "country": "Israel"
+  },
+  {
+    "city": "Kfar Saba",
+    "country": "Israel"
+  },
+  {
+    "city": "Hadera",
+    "country": "Israel"
+  },
+  {
+    "city": "Modi'in",
+    "country": "Israel"
+  },
+  {
+    "city": "Tiberias",
+    "country": "Israel"
+  },
+  {
+    "city": "Eilat",
+    "country": "Israel"
+  },
+  {
+    "city": "Nazareth",
+    "country": "Israel"
+  },
+  {
+    "city": "Acre",
+    "country": "Israel"
+  },
+  {
+    "city": "Safed",
+    "country": "Israel"
+  },
+  {
+    "city": "Dimona",
+    "country": "Israel"
+  },
+  {
+    "city": "Yavne",
+    "country": "Israel"
+  },
+  {
+    "city": "Nahariya",
+    "country": "Israel"
+  },
+  {
+    "city": "New York",
+    "country": "USA"
+  },
+  {
+    "city": "Los Angeles",
+    "country": "USA"
+  },
+  {
+    "city": "London",
+    "country": "United Kingdom"
+  },
+  {
+    "city": "Paris",
+    "country": "France"
+  },
+  {
+    "city": "Berlin",
+    "country": "Germany"
+  },
+  {
+    "city": "Madrid",
+    "country": "Spain"
+  },
+  {
+    "city": "Rome",
+    "country": "Italy"
+  },
+  {
+    "city": "Amsterdam",
+    "country": "Netherlands"
+  },
+  {
+    "city": "Tokyo",
+    "country": "Japan"
+  },
+  {
+    "city": "Seoul",
+    "country": "South Korea"
+  },
+  {
+    "city": "Bangkok",
+    "country": "Thailand"
+  },
+  {
+    "city": "Toronto",
+    "country": "Canada"
+  },
+  {
+    "city": "Sydney",
+    "country": "Australia"
+  },
+  {
+    "city": "Melbourne",
+    "country": "Australia"
+  },
+  {
+    "city": "Buenos Aires",
+    "country": "Argentina"
+  },
+  {
+    "city": "S\u00e3o Paulo",
+    "country": "Brazil"
+  },
+  {
+    "city": "Mexico City",
+    "country": "Mexico"
+  },
+  {
+    "city": "Cairo",
+    "country": "Egypt"
+  },
+  {
+    "city": "Cape Town",
+    "country": "South Africa"
+  }
+]

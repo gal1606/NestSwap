@@ -1,9 +1,12 @@
-package com.example.nestswap.Model
+package com.example.nestswap.Model.dao
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "rentals")
 data class Rental(
-    val itemId: Int,
-    val renter: String,
+    @PrimaryKey val id: Int,
+    val itemName: String,
     val owner: String,
-    val startDate: String,
-    val endDate: String
+    val renter: String
 )

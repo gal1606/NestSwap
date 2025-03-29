@@ -1,100 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/ivItemImage"
+        <ImageView
+        android:id="@+id/iv_item_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:contentDescription="Item Image"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@android:drawable/ic_menu_gallery" />
+        android:layout_gravity="center"
+        android:src="@android:drawable/ic_menu_gallery"/>
 
-    <Button
-        android:id="@+id/btnPickImage"
+
+        <Button
+        android:id="@+id/btn_pick_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pick Image"
-        app:layout_constraintTop_toBottomOf="@+id/ivItemImage"
-        app:layout_constraintStart_toStartOf="@+id/ivItemImage"
-        android:layout_marginTop="8dp" />
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="Pick Image" />
 
-    <Button
-        android:id="@+id/btnTakePicture"
+        <Button
+        android:id="@+id/btn_take_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Take Picture"
-        app:layout_constraintTop_toBottomOf="@+id/btnPickImage"
-        app:layout_constraintStart_toStartOf="@+id/ivItemImage"
-        android:layout_marginTop="8dp" />
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="Take Picture" />
 
     <EditText
-        android:id="@+id/etItemName"
-        android:layout_width="0dp"
+        android:id="@+id/et_item_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Item Name"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/btnTakePicture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
     <EditText
-        android:id="@+id/etItemPrice"
-        android:layout_width="0dp"
+        android:id="@+id/et_item_description"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Price (e.g., 10.99)"
-        android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@+id/etItemName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Description"
         android:layout_marginTop="8dp" />
 
     <EditText
-        android:id="@+id/etItemDescription"
-        android:layout_width="0dp"
+        android:id="@+id/et_item_price"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description"
-        android:inputType="textMultiLine"
-        app:layout_constraintTop_toBottomOf="@+id/etItemPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:minHeight="100dp" />
-
-    <Button
-        android:id="@+id/btnSaveItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintTop_toBottomOf="@+id/etItemDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        app:layout_constraintTop_toBottomOf="@+id/etItemDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp" />
+        android:hint="Price"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="8dp" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/btnSaveItem"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_save_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+
+    </LinearLayout>
+
+</LinearLayout>

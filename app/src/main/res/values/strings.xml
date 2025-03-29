@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Nest Swap</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fill_card">Please fill in your card details</string>
+    <string name="card_number">Card Number:</string>
+    <string name="expiration_date">Expiration date:</string>
+    <string name="cvv">Cvv:</string>
+    <string name="id">Id:</string>
+    <string name="total">Total: $%1$s</string>
+    <string name="no_reviews">User has no reviews</string>
+    <string name="owner">Owner: %1$s</string>
+    <string name="price">Price: $%1$s</string>
 </resources>
